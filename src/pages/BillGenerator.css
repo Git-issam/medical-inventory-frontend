@@ -1,0 +1,590 @@
+/* Bill Generator Container */
+.bill-generator-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.bill-gen-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.btn-back {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.page-title {
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Form Container */
+.bill-form-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.form-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Form Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-input {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Medicine Selection */
+.btn-add-row {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-add-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.empty-medicine-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6b7280;
+}
+
+.empty-icon {
+    color: #d1d5db;
+    margin-bottom: 1rem;
+}
+
+.btn-add-first {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-add-first:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+/* Medicine Table */
+.medicine-table-wrapper {
+    overflow-x: auto;
+}
+
+.medicine-selection-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.medicine-selection-table thead th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.medicine-selection-table thead th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.medicine-selection-table thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.medicine-selection-table tbody tr {
+    background: white;
+    transition: background-color 0.2s;
+}
+
+.medicine-selection-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.medicine-selection-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.medicine-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background: white;
+    cursor: pointer;
+}
+
+.medicine-select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.quantity-input,
+.price-input {
+    width: 100px;
+    padding: 0.5rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.quantity-input:focus,
+.price-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.total-cell {
+    font-weight: 600;
+    color: #10b981;
+    font-size: 1.05rem;
+}
+
+.btn-remove {
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-remove:hover {
+    background: #fecaca;
+    transform: scale(1.1);
+}
+
+/* Bill Summary */
+.bill-summary {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.total-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.total-section h3 {
+    font-size: 1.5rem;
+    color: #374151;
+    font-weight: 600;
+}
+
+.total-amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.btn-generate-bill {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.btn-generate-bill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Bill Document View */
+.bill-container {
+    min-height: 100vh;
+    background: #f3f4f6;
+    padding: 2rem;
+}
+
+.bill-actions {
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-print,
+.btn-download {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-print:hover,
+.btn-download:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Bill Document */
+.bill-document {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bill-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 2rem;
+    border-bottom: 3px solid #667eea;
+    margin-bottom: 2rem;
+}
+
+.clinic-info h1 {
+    font-size: 2rem;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.clinic-info p {
+    color: #6b7280;
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+}
+
+.bill-meta {
+    text-align: right;
+}
+
+.bill-meta h2 {
+    font-size: 1.8rem;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.bill-meta p {
+    margin: 0.25rem 0;
+    color: #374151;
+}
+
+.bill-customer {
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.bill-customer h3 {
+    color: #1f2937;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.bill-customer p {
+    margin: 0.5rem 0;
+    color: #374151;
+}
+
+/* Bill Table */
+.bill-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+.bill-table thead th {
+    background: #374151;
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.bill-table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.bill-table tfoot td {
+    padding: 1rem;
+    font-size: 1.2rem;
+    background: #f9fafb;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* Bill Footer */
+.bill-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e5e7eb;
+}
+
+.terms h4 {
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+}
+
+.terms ul {
+    list-style: none;
+    padding: 0;
+}
+
+.terms li {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.terms li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #667eea;
+    font-weight: bold;
+}
+
+.signature {
+    text-align: center;
+}
+
+.signature p {
+    color: #6b7280;
+    margin-bottom: 3rem;
+}
+
+.signature-line {
+    width: 200px;
+    border-top: 2px solid #374151;
+}
+
+.bill-thank-you {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e5e7eb;
+}
+
+.bill-thank-you p {
+    font-size: 1.2rem;
+    color: #667eea;
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+
+.tagline {
+    font-size: 0.95rem !important;
+    color: #6b7280 !important;
+    font-weight: 400 !important;
+    font-style: italic;
+}
+
+/* Print Styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .bill-container {
+        background: white;
+        padding: 0;
+    }
+
+    .bill-document {
+        box-shadow: none;
+        padding: 1rem;
+        max-width: 100%;
+    }
+
+    .bill-header {
+        border-bottom: 2px solid #000;
+    }
+
+    .bill-table thead th {
+        background: #000 !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .bill-generator-container {
+        padding: 1rem;
+    }
+
+    .bill-gen-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bill-summary {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .total-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .bill-header {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .bill-meta {
+        text-align: left;
+    }
+
+    .bill-footer {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .medicine-table-wrapper {
+        overflow-x: scroll;
+    }
+}
