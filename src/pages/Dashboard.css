@@ -6,7 +6,86 @@
     font-family: 'Inter', sans-serif;
 }
 
+/* Sidebar */
+.sidebar {
+    width: 180px;
+    background: #ffffff;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
 
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #374151;
+    font-size: 0.95rem;
+    font-weight: 500;
+    position: relative;
+}
+
+.sidebar-item:hover {
+    background-color: #f3f4f6;
+}
+
+.sidebar-item.active {
+    background-color: #3b82f6;
+    color: #ffffff;
+}
+
+.sidebar-item.active .sidebar-icon {
+    color: #ffffff;
+}
+
+.sidebar-icon {
+    flex-shrink: 0;
+    color: #6b7280;
+    transition: color 0.2s ease;
+}
+
+.sidebar-item.active .sidebar-icon {
+    color: #ffffff;
+}
+
+.sidebar-label {
+    flex: 1;
+    white-space: nowrap;
+}
+
+.notification-badge {
+    background-color: #3b82f6;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.125rem 0.5rem;
+    border-radius: 12px;
+    min-width: 20px;
+    text-align: center;
+    margin-left: auto;
+}
+
+.sidebar-item.active .notification-badge {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background-color: #e5e7eb;
+    margin: 0.5rem 0;
+}
 
 /* Main Content */
 .main-content {
@@ -16,6 +95,8 @@
     background: url('../assets/pharmacy_bg.png');
     background-size: cover;
     background-attachment: fixed;
+    min-width: 0;
+    overflow-x: hidden;
 }
 
 /* Top Bar */
@@ -70,8 +151,11 @@
 
 /* Content Area */
 .content-area {
-    padding: 2rem;
+    padding: 1.5rem;
     flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    max-width: 100%;
 }
 
 .page-header {
@@ -79,18 +163,26 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 60%, #0ea5e9 100%);
+    border-radius: 14px;
+    padding: 1.1rem 1.5rem;
+    box-shadow: 0 4px 20px rgba(30, 64, 175, 0.35);
 }
 
 .header-actions {
     display: flex;
     gap: 1rem;
+    flex-shrink: 0;
 }
 
 .page-title {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #1f2937;
+    color: #ffffff;
     margin-bottom: 0;
+    white-space: nowrap;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.3px;
 }
 
 .btn-generate-bill {
@@ -138,8 +230,10 @@
     backdrop-filter: blur(12px);
     border-radius: 16px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: visible;
     padding: 1rem;
+    max-width: 100%;
 }
 
 .modern-table {
@@ -226,20 +320,22 @@
 /* KPI Cards */
 .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
 }
 
 .kpi-card {
     background: white;
-    padding: 1.5rem;
+    padding: 1.2rem 1rem;
     border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
+    min-width: 0;
 }
 
 .kpi-card:hover {
@@ -248,12 +344,13 @@
 }
 
 .kpi-icon-wrapper {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .bg-blue-100 {
@@ -283,9 +380,11 @@
 }
 
 .kpi-label {
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     color: #6b7280;
     margin-bottom: 0.25rem;
+    line-height: 1.3;
+    word-break: break-word;
 }
 
 .kpi-value {
@@ -316,4 +415,160 @@
 
 .btn-edit:active {
     transform: translateY(0);
+}
+
+/* Delete Button */
+.btn-delete {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+    background-color: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+}
+
+.btn-delete:active {
+    transform: translateY(0);
+}
+
+/* Actions cell - side-by-side buttons */
+.actions-cell {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Skeleton loader */
+.skeleton {
+    background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+.skeleton-text {
+    height: 16px;
+    width: 80%;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ── Stock Charts ───────────────────────────── */
+.charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.chart-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    padding: 1.1rem 1.2rem 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(8px);
+}
+
+.chart-card-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.chart-title {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.chart-subtitle {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.chart-legend {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.4rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid #f3f4f6;
+}
+
+.legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+.chart-tooltip {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.6rem 0.9rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    font-size: 0.82rem;
+}
+
+.chart-tooltip-label {
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 0.3rem;
+}
+
+.chart-tooltip p {
+    margin: 0.1rem 0;
+}
+
+/* Dark mode chart overrides */
+body.dark .chart-card {
+    background: rgba(30, 41, 59, 0.9);
+}
+
+body.dark .chart-title {
+    color: #f1f5f9;
+}
+
+body.dark .chart-subtitle {
+    color: #64748b;
+}
+
+body.dark .chart-legend {
+    color: #94a3b8;
+    border-top-color: #334155;
+}
+
+body.dark .chart-tooltip {
+    background: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+body.dark .chart-tooltip-label {
+    color: #f1f5f9;
 }

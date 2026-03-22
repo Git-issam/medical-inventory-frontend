@@ -15,8 +15,17 @@ import {
     Clock,
     LogOut,
     FileText,
-    Edit
+    Edit,
+    LayoutDashboard,
+    UserCircle,
+    Activity,
+    Trash2,
+    TrendingUp
 } from "lucide-react";
+import {
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    Cell, ReferenceLine, Legend
+} from "recharts";
 import medicineService from "../services/medicineService";
 import authService from "../services/authService";
 import "./Dashboard.css";
@@ -86,29 +95,55 @@ function Dashboard() {
         med.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const handleDelete = async (id, name) => {
+        if (!window.confirm(`Are you sure you want to delete "${name}"? This cannot be undone.`)) return;
+        try {
+            await medicineService.deleteMedicine(id);
+            await fetchMedicines();
+        } catch (error) {
+            console.error('Error deleting medicine:', error);
+            alert('Failed to delete medicine. Please try again.');
+        }
+    };
+
     return (
         <div className="dashboard-container">
             {/* Sidebar */}
-            {/* Sidebar */}
-            <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-                <div className="sidebar-header">
-                    <Menu className="sidebar-icon toggle-btn" size={24} onClick={toggleSidebar} title="Menu" />
-                </div>
-
-                <div className="sidebar-menu">
-                    <div className="sidebar-item" onClick={() => navigate('/dashboard')}>
-                        <Home className="sidebar-icon" size={24} title="Home" />
-                        <span className="sidebar-label">Home</span>
+            <aside className="sidebar">
+                <div className="sidebar-content">
+                    <div className="sidebar-item active" onClick={() => navigate('/dashboard')}>
+                        <LayoutDashboard className="sidebar-icon" size={20} />
+                        <span className="sidebar-label">Dashboard</span>
                     </div>
 
                     <div className="sidebar-item" onClick={() => navigate('/medicine')}>
-                        <Package className="sidebar-icon" size={24} title="Inventory" />
+                        <Package className="sidebar-icon" size={20} />
                         <span className="sidebar-label">Inventory</span>
                     </div>
 
+                    <div className="sidebar-item" onClick={() => navigate('/bill')}>
+                        <FileText className="sidebar-icon" size={20} />
+                        <span className="sidebar-label">Billing</span>
+                    </div>
+
+                    <div className="sidebar-item" onClick={() => navigate('/sales')}>
+                        <TrendingUp className="sidebar-icon" size={20} />
+                        <span className="sidebar-label">Sales Report</span>
+                    </div>
+
                     <div className="sidebar-item" onClick={() => navigate('/settings')}>
-                        <Settings className="sidebar-icon" size={24} title="Settings" />
+                        <Settings className="sidebar-icon" size={20} />
                         <span className="sidebar-label">Settings</span>
+                    </div>
+
+                    <div className="sidebar-divider"></div>
+
+                    <div className="sidebar-item" onClick={() => {
+                        authService.logout();
+                        navigate('/');
+                    }}>
+                        <LogOut className="sidebar-icon" size={20} />
+                        <span className="sidebar-label">Logout</span>
                     </div>
                 </div>
             </aside>
@@ -193,6 +228,102 @@ function Dashboard() {
                         </div>
                     </div>
 
+                    {/* ── Stock Charts ─────────────────────────────── */}
+                    {!loading && medicines.length > 0 && (() => {
+                        // Prepare chart data — top 15 by stock, non-expired
+                        const chartData = [...medicines]
+                            .filter(m => new Date(m.expiry) > new Date())
+                            .sort((a, b) => b.stock - a.stock)
+                            .slice(0, 12)
+                            .map(m => ({
+                                name: m.name.length > 10 ? m.name.slice(0, 10) + '…' : m.name,
+                                stock: m.stock,
+                                totalStock: m.totalStock,
+                            }));
+
+                        const CustomTooltip = ({ active, payload, label }) => {
+                            if (active && payload && payload.length) {
+                                return (
+                                    <div className="chart-tooltip">
+                                        <p className="chart-tooltip-label">{label}</p>
+                                        {payload.map((p, i) => (
+                                            <p key={i} style={{ color: p.color }}>
+                                                {p.name}: <strong>{p.value}</strong>
+                                            </p>
+                                        ))}
+                                    </div>
+                                );
+                            }
+                            return null;
+                        };
+
+                        return (
+                            <div className="charts-row">
+                                {/* Bar Chart — Current Stock */}
+                                <div className="chart-card">
+                                    <div className="chart-card-header">
+                                        <h3 className="chart-title">📦 Stock Levels</h3>
+                                        <span className="chart-subtitle">Top 12 medicines by available stock</span>
+                                    </div>
+                                    <ResponsiveContainer width="100%" height={220}>
+                                        <BarChart data={chartData} margin={{ top: 8, right: 16, left: -10, bottom: 40 }}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+                                            <XAxis
+                                                dataKey="name"
+                                                tick={{ fontSize: 11, fill: '#6b7280' }}
+                                                angle={-35}
+                                                textAnchor="end"
+                                                interval={0}
+                                            />
+                                            <YAxis tick={{ fontSize: 11, fill: '#6b7280' }} />
+                                            <Tooltip content={<CustomTooltip />} />
+                                            <ReferenceLine y={10} stroke="#f59e0b" strokeDasharray="4 3" label={{ value: 'Low stock', position: 'insideTopRight', fontSize: 10, fill: '#f59e0b' }} />
+                                            <Bar dataKey="stock" name="Available" radius={[4, 4, 0, 0]}>
+                                                {chartData.map((entry, index) => (
+                                                    <Cell
+                                                        key={`cell-${index}`}
+                                                        fill={entry.stock <= 10 ? '#ef4444' : entry.stock <= 30 ? '#f59e0b' : '#3b82f6'}
+                                                    />
+                                                ))}
+                                            </Bar>
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                    <div className="chart-legend">
+                                        <span className="legend-dot" style={{ background: '#3b82f6' }} /> Healthy
+                                        <span className="legend-dot" style={{ background: '#f59e0b' }} /> Warning (≤30)
+                                        <span className="legend-dot" style={{ background: '#ef4444' }} /> Low (≤10)
+                                    </div>
+                                </div>
+
+                                {/* Bar Chart — Stock vs Total Stock */}
+                                <div className="chart-card">
+                                    <div className="chart-card-header">
+                                        <h3 className="chart-title">📊 Stock vs Total</h3>
+                                        <span className="chart-subtitle">Available vs originally stocked</span>
+                                    </div>
+                                    <ResponsiveContainer width="100%" height={220}>
+                                        <BarChart data={chartData} margin={{ top: 8, right: 16, left: -10, bottom: 40 }}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+                                            <XAxis
+                                                dataKey="name"
+                                                tick={{ fontSize: 11, fill: '#6b7280' }}
+                                                angle={-35}
+                                                textAnchor="end"
+                                                interval={0}
+                                            />
+                                            <YAxis tick={{ fontSize: 11, fill: '#6b7280' }} />
+                                            <Tooltip content={<CustomTooltip />} />
+                                            <Legend wrapperStyle={{ fontSize: 11, paddingTop: 4 }} />
+                                            <Bar dataKey="totalStock" name="Total Stock" fill="#e0e7ff" radius={[4, 4, 0, 0]} />
+                                            <Bar dataKey="stock" name="Available" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+                        );
+                    })()}
+
+                    {/* ── Inventory Table ──────────────────────────── */}
                     <div className="inventory-card">
                         <table className="modern-table">
                             <thead>
@@ -202,6 +333,7 @@ function Dashboard() {
                                     <th>Total Stock</th>
                                     <th>Batch-No</th>
                                     <th>supplier-Name</th>
+                                    <th>Price (₹)</th>
                                     <th>Expiry</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -220,12 +352,13 @@ function Dashboard() {
                                             <td><div className="skeleton skeleton-text"></div></td>
                                             <td><div className="skeleton skeleton-text"></div></td>
                                             <td><div className="skeleton skeleton-text"></div></td>
+                                            <td><div className="skeleton skeleton-text"></div></td>
                                         </tr>
                                     ))
                                 ) : filteredMedicines.length === 0 ? (
                                     // Empty State
                                     <tr>
-                                        <td colSpan="8">
+                                        <td colSpan="9">
                                             <div className="empty-state">
                                                 <Package className="empty-state-icon" size={48} />
                                                 <h3>No medicines found</h3>
@@ -236,7 +369,7 @@ function Dashboard() {
                                 ) : (
                                     filteredMedicines.map((med) => {
                                         const expired = isExpired(med.expiry);
-                                        const lowStock = med.stock < 10;
+                                        const lowStock = med.stock <= 10;
 
                                         return (
                                             <tr key={med.id}>
@@ -245,6 +378,7 @@ function Dashboard() {
                                                 <td>{med.totalStock !== undefined ? med.totalStock : 'N/A'}</td>
                                                 <td>{med.batchNo || 'N/A'}</td>
                                                 <td>{med.supplier || 'N/A'}</td>
+                                                <td>₹{med.price !== undefined ? Number(med.price).toFixed(2) : '0.00'}</td>
                                                 <td>{med.expiry ? new Date(med.expiry).toLocaleDateString('en-IN') : 'N/A'}</td>
                                                 <td>
                                                     {expired ? (
@@ -261,13 +395,20 @@ function Dashboard() {
                                                         </span>
                                                     )}
                                                 </td>
-                                                <td>
+                                                <td className="actions-cell">
                                                     <button
                                                         className="btn-edit"
                                                         onClick={() => navigate(`/medicine?id=${med.id}`)}
                                                         title="Edit medicine"
                                                     >
                                                         <Edit size={16} />
+                                                    </button>
+                                                    <button
+                                                        className="btn-delete"
+                                                        onClick={() => handleDelete(med.id, med.name)}
+                                                        title="Delete medicine"
+                                                    >
+                                                        <Trash2 size={16} />
                                                     </button>
                                                 </td>
                                             </tr>
@@ -278,8 +419,8 @@ function Dashboard() {
                         </table>
                     </div>
                 </main>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
 

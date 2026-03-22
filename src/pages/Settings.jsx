@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, User, Bell, Moon, LogOut } from "lucide-react";
 import "./Settings.css";
 
 function Settings() {
     const navigate = useNavigate();
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(
+        () => localStorage.getItem("darkMode") === "true"
+    );
     const [notifications, setNotifications] = useState(true);
+
+    // Apply dark class to body whenever darkMode changes
+    useEffect(() => {
+        if (darkMode) {
+            document.body.classList.add("dark");
+        } else {
+            document.body.classList.remove("dark");
+        }
+        localStorage.setItem("darkMode", darkMode);
+    }, [darkMode]);
 
     return (
         <div className="settings-container">

@@ -1,0 +1,159 @@
+/* ===== SPLASH SCREEN ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+.splash-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0d1b2a 0%, #1a3a5c 40%, #0f3d2f 100%);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Animated background orbs */
+.splash-container::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(30, 141, 216, 0.15) 0%, transparent 70%);
+    top: -100px;
+    left: -100px;
+    animation: floatOrb 8s ease-in-out infinite;
+    border-radius: 50%;
+}
+
+.splash-container::after {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(102, 187, 106, 0.12) 0%, transparent 70%);
+    bottom: -80px;
+    right: -80px;
+    animation: floatOrb 10s ease-in-out infinite reverse;
+    border-radius: 50%;
+}
+
+@keyframes floatOrb {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(30px, 30px) scale(1.1);
+    }
+}
+
+/* Logo area */
+.splash-logo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+    animation: splashFadeIn 1s ease forwards;
+}
+
+@keyframes splashFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.splash-logo {
+    width: 380px;
+    max-width: 90vw;
+    /* gentle pulse */
+    animation: logoPulse 3s ease-in-out infinite;
+    filter: drop-shadow(0 8px 32px rgba(30, 141, 216, 0.45));
+}
+
+@keyframes logoPulse {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 8px 32px rgba(30, 141, 216, 0.45));
+        transform: scale(1);
+    }
+
+    50% {
+        filter: drop-shadow(0 12px 48px rgba(102, 187, 106, 0.5));
+        transform: scale(1.03);
+    }
+}
+
+/* Divider line under logo */
+.splash-divider {
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #1e8dd8, #66bb6a, transparent);
+    margin: 24px auto 28px;
+    border-radius: 2px;
+    animation: dividerGrow 1.2s ease forwards 0.5s;
+    transform-origin: center;
+    transform: scaleX(0);
+    opacity: 0;
+}
+
+@keyframes dividerGrow {
+    to {
+        transform: scaleX(1);
+        opacity: 1;
+    }
+}
+
+/* Spinner */
+.splash-spinner-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    z-index: 1;
+    animation: splashFadeIn 1s ease forwards 0.8s;
+    opacity: 0;
+}
+
+.splash-spinner {
+    width: 44px;
+    height: 44px;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    border-top: 3px solid #1e8dd8;
+    border-right: 3px solid #66bb6a;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.splash-loading-text {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/* Bottom tagline */
+.splash-tagline {
+    position: absolute;
+    bottom: 32px;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    z-index: 1;
+}
