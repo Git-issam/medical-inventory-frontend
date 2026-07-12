@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with base configuration
 const api = axios.create({
-    baseURL: 'https://medical-inventory-backend-production-2b53.up.railway.app/api',
+    baseURL: '/api',
     headers: {
         'Content-Type': 'application/json',
     },
